@@ -36,8 +36,10 @@ def train(args):
     print('加载数据完成')
     word_attn_model = AttentionWordGRU(args)
     sent_attn_model = AttentionSentGRU(args)
-    model = None
-    if args.cuda: model.cuda()
+    #model = None
+    if args.cuda:
+        word_attn_model.cuda()
+        word_attn_model.cuda()
     word_optimizer = torch.optim.Adam(word_attn_model.parameters(), lr=args.lr)
     sent_optimizer = torch.optim.Adam(sent_attn_model.parameters(), lr=args.lr)
     steps = 0
