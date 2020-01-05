@@ -9,8 +9,6 @@
 #### 2. 直接运行train.py就可以。  python train.py   
 
 ### 在English-readability-classification中，
-#### ose_data是OneStopEnglish数据集分好训练，验证，测试集之后的文件夹，数据格式为 index，level，content。其中content还保留着段落的格式信息。
-#### ose_data_2是丢掉了index一列，只保留level和content，其中content的内容去掉了段落格式，全都变成一个段落。
-#### wbt_data是WeeBit数据集切分好训练，验证，测试集之后的文件夹，数据格式为 index, level, content。其中content还保留着段落的格式信息。
-#### wbt_data_2是丢掉了index一列，只保留level和content，其中content的内容去掉了段落格式，全部变成一个段落。
+#### ose_data是OneStopEnglish数据集分好训练，验证，测试集之后的文件夹，数据格式为 index，level，content。其中content还保留着段落的格式信ose_data_2是丢掉了index一列，只保留level和content，其中content的内容去掉了段落格式，全都变成一个段落。
+#### wbt_data是WeeBit数据集切分好训练，验证，测试集之后的文件夹，数据格式为 index, level, content。其中content还保留着段落的格式信息。wbt_data_2是丢掉了index一列，只保留level和content，其中content的内容去掉了段落格式，全部变成一个段落。
 #### 在我的HAN模型中，使用的是ose_data 和 wbt-data ,代码中的输入是ose_data的数据，若要验证wbt数据集，只需要在data_processor.py中将数据文件改成wbt的数据文件即可。
