@@ -1,4 +1,4 @@
-import jieba
+#import jieba
 import re
 import numpy as np
 #from pyltp import SentenceSplitter
@@ -10,34 +10,39 @@ from torchtext.vocab import Vectors
 import torch
 import pandas as pd
 
+#nltk.download('stopwords')
+#nltk.download('punkt')
 
-def tokenizer(text): # create a tokenizer function
-    regex = re.compile(r'[^\u4e00-\u9fa5aA-Za-z0-9]')
-    text = regex.sub(' ', text)
-    return [word for word in jieba.cut(text) if word.strip()]
+from nltk.corpus import stopwords
+list_stopWords = list(set(stopwords.word('english')))
+
+#def tokenizer(text): # create a tokenizer function
+#    regex = re.compile(r'[^\u4e00-\u9fa5aA-Za-z0-9]')
+#    text = regex.sub(' ', text)
+#    return [word for word in jieba.cut(text) if word.strip()]
 
 # 去停用词
-def get_stop_words():
-    file_object = open('./ose_data/english.txt')
-    stop_words = []
-    for line in file_object.readlines():
-        line = line[:-1]
-        line = line.strip()
-        stop_words.append(line)
-    return stop_words
+#def get_stop_words():
+#    file_object = open('./ose_data/english.txt')
+#    stop_words = []
+#    for line in file_object.readlines():
+#        line = line[:-1]
+#        line = line.strip()
+#        stop_words.append(line)
+#    return stop_words
 
 def load_data(args):
     print('加载数据中...')
-    stop_words = get_stop_words() # 加载停用词表
+    #stop_words = get_stop_words() # 加载停用词表
     '''
     如果需要设置文本的长度，则设置fix_length,否则torchtext自动将文本长度处理为最大样本长度
     text = data.Field(sequential=True, tokenize=tokenizer, fix_length=args.max_len, stop_words=stop_words)
     '''
-#     text = data.Field(sequential=True, lower=True, tokenize=tokenizer, stop_words=stop_words)
-    text = data.Field(tokenize='spacy', lower=True)
+    text = data.Field(sequential=True, lower=True, tokenize=word_tokenizer, stop_words=list_stopWords)
+    #text = data.Field(tokenize='spacy', lower=True)
     label = data.Field(sequential=False)
 
-    text.tokenize = tokenizer
+    #text.tokenize = tokenizer
     train, val = data.TabularDataset.splits(
             path='ose_data/',
             skip_header=True,
@@ -48,7 +53,7 @@ def load_data(args):
         )
 
     if args.static:
-        text.build_vocab(train, val, vectors=Vectors(name="ose_data/eco_article.vector")) # 此处改为你自己的词向量
+        text.build_vocab(train, val, vectors=Vectors(name='/home/yuling/tyling-data/word_vectors/glove.6B.100d.txt')) # 此处改为你自己的词向量
         args.embedding_dim = text.vocab.vectors.size()[-1]
         args.vectors = text.vocab.vectors
     else: text.build_vocab(train, val)
